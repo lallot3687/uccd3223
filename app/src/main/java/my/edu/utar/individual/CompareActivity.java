@@ -422,10 +422,6 @@ public class CompareActivity extends View {
             wrongIndicator.setVisibility(View.VISIBLE);
             wrong.setVisibility(View.VISIBLE);
             countWrong++;
-
-            showImageOverlay(R.drawable.catlaugh);
-            playSound(getContext(),R.raw.laughingcat);
-
         }
 
         new Handler().postDelayed(new Runnable() {
@@ -551,60 +547,7 @@ public class CompareActivity extends View {
         }, 400); // 1000ms (1-second delay before shrinking back)
 
     }
-    private void showImageOverlay(int image) {
-        Context context = getContext(); // Get the context from View
-        if (!(context instanceof Context)) return; // Ensure it's valid
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        // Create a layout for the dialog
-        FrameLayout container = new FrameLayout(context);
-        container.setLayoutParams(new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-        ));
-
-        // Create an ImageView
-        ImageView catImage = new ImageView(context);
-        catImage.setImageBitmap(BitmapFactory.decodeResource(getResources(),image));
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(600, 600);
-        params.gravity = Gravity.CENTER;
-        catImage.setLayoutParams(params);
-
-        // Add ImageView to container
-        container.addView(catImage);
-
-        // Set the container as the dialog view
-        builder.setView(container);
-        AlertDialog dialog = builder.create();
-
-        // Make the dialog background transparent
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-
-        dialog.show();
-        new Handler(Looper.getMainLooper()).postDelayed(dialog::dismiss, 3000);
-
-    }
-
-
-
-    public void playSound(Context context, int soundResource) {
-        if (mediaPlayer != null) {
-            mediaPlayer.release(); // Release old instance
-        }
-        mediaPlayer = MediaPlayer.create(context, soundResource);
-        mediaPlayer.start();
-    }
-
-    public void stopSound() {
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
 
 
 

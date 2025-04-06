@@ -1,5 +1,6 @@
 package my.edu.utar.individual;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.Image;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +71,13 @@ public class Menu extends View {
         compare.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v){
-               activity.setContentView(new CompareActivity(activity));
+               scaleAnimation(compare);
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.setContentView(new CompareActivity(activity));
+                    }
+                }, 500); // Delay time (same as animation duration)
             }
         });
 
@@ -78,7 +87,13 @@ public class Menu extends View {
         order.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.setContentView(new OrderActivity(activity));
+                scaleAnimation(order);
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.setContentView(new OrderActivity(activity));
+                    }
+                }, 500); // Delay time (same as animation duration)
             }
         });
 
@@ -88,7 +103,14 @@ public class Menu extends View {
         compose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.setContentView(new ComposeActivity(activity));
+                scaleAnimation(compose);
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.setContentView(new ComposeActivity(activity));
+                    }
+                }, 500); // Delay time (same as animation duration)
+
             }
         });
     }
@@ -118,6 +140,31 @@ public class Menu extends View {
         Bitmap bm = BitmapFactory.decodeResource(getResources(),image);
         iv.setImageBitmap(bm);
         return iv;
+    }
+
+
+    private void scaleAnimation(ImageView iv){
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(iv,"scaleX",1.0f,1.1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(iv,"scaleY",1.0f,1.1f);
+
+        scaleX.setDuration(0);
+        scaleY.setDuration(0);
+
+        scaleX.start();
+        scaleY.start();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ObjectAnimator scaleXBack = ObjectAnimator.ofFloat(iv, "scaleX", 1.1f, 1.0f);
+                ObjectAnimator scaleYBack = ObjectAnimator.ofFloat(iv, "scaleY", 1.1f, 1.0f);
+                scaleXBack.setDuration(0);
+                scaleYBack.setDuration(0);
+                scaleXBack.start();
+                scaleYBack.start();
+            }
+        }, 300); // 1000ms (1-second delay before shrinking back)
+
     }
 
 

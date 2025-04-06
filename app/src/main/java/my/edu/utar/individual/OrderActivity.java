@@ -305,11 +305,11 @@ public class OrderActivity extends View {
             numArr[i] = new TextView(getContext());
             numArr[i].setBackgroundColor(Color.parseColor("#D9D9D9"));
             if (i == 0){
-                numberArr[i] = random.nextInt(999) +1;
+                numberArr[i] = random.nextInt(100) +1;
             }
             else {
                 do{
-                    numberArr[i] = random.nextInt(999) +1;
+                    numberArr[i] = random.nextInt(100) +1;
                 }while(numberArr[i] == numberArr[i-1]);
 
             }
@@ -363,6 +363,9 @@ public class OrderActivity extends View {
     }
 
     private void checkAnswers(int checkNum,int index){
+
+
+
         boolean isCorrect = false;
        if (index == 5){
            if (words[indexText].equals("ascending order.")){
@@ -566,7 +569,11 @@ public class OrderActivity extends View {
         FrameLayout.LayoutParams ansParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,1000);
         ansParams.gravity = Gravity.CENTER;
         ansContainer.setLayoutParams(ansParams);
-        ansContainer.setBackgroundColor(Color.WHITE);
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(Color.WHITE);
+        drawable.setCornerRadius(20);
+        drawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+        ansContainer.setBackground(drawable);
 
         int[][] positions = {{140,250},{370,250},{605,250},{835,250},{1065,250}};
 
@@ -575,6 +582,7 @@ public class OrderActivity extends View {
 
         //Text
         TextView tv = new TextView(getContext());
+
         setText(tv,"Correct answers:", FrameLayout.LayoutParams.MATCH_PARENT,150,25,Color.BLACK,0,50,3,false,container);
 
         //Show correct answer

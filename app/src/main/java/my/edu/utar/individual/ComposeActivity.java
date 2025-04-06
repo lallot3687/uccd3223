@@ -264,11 +264,11 @@ public class ComposeActivity extends View {
             numArr[i] = new TextView(getContext());
             numArr[i].setBackgroundColor(Color.parseColor("#17E100"));
             if (i == 0){
-                numberArr[i] = random.nextInt(30) +1;
+                numberArr[i] = random.nextInt(10) +1;
             }
             else {
                 do{
-                    numberArr[i] = random.nextInt(30) +1;
+                    numberArr[i] = random.nextInt(10) +1;
                 }while(numberArr[i] == numberArr[i-1]);
 
             }
@@ -324,27 +324,29 @@ public class ComposeActivity extends View {
     }
 
     public void userOnClick(){
-        for (int i=0;i<4;i++){
-            final int index = i;
-            numArr[i].setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!textMoved[index]){
+        if (clickCount < 2){
+            for (int i=0;i<4;i++){
+                final int index = i;
+                numArr[i].setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!textMoved[index]){
 
-                        numClick[clickCount] = Integer.parseInt(numArr[index].getText().toString());
-                        moveImage(numArr[index],clickCount,index,250);
-                    }
-                    else {
-                        returnImage(numArr[index],index);
-                    }
-                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            checkAnswers(clickCount);
+                            numClick[clickCount] = Integer.parseInt(numArr[index].getText().toString());
+                            moveImage(numArr[index],clickCount,index,250);
                         }
-                    },250);
-                }
-            });
+                        else {
+                            returnImage(numArr[index],index);
+                        }
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkAnswers(clickCount);
+                            }
+                        },250);
+                    }
+                });
+            }
         }
     }
 
@@ -431,9 +433,6 @@ public class ComposeActivity extends View {
     }
 
     private void recordCount(){
-
-
-
         setText(ctR,String.valueOf(countRight),FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT,30,Color.BLACK,370,2180,3,true,"D9D9D9");
         setText(ctW,String.valueOf(countWrong),FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT,30,Color.BLACK,370,2330,3,true,"D9D9D9");
 
@@ -441,7 +440,11 @@ public class ComposeActivity extends View {
 
     private void checkAnswers(int index){
         boolean isCorrect = false;
-        Log.d("Operator",String.valueOf(operators[indexNum]));
+        if (clickCount == 2) {
+            for (int i =0 ;i <4;i++){
+                numArr[i].setEnabled(false);
+            }
+        }
         if (index == 2){
             switch (operators[indexNum]) {
                 case "+":
